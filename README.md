@@ -14,4 +14,4 @@ Trabalho final da disciplina de Desenvolvimento Web II do Mestrado PPGTI.
 - [x] CRUD artigo (ROLE_ALUNO)
 - [ ] Visualização do progresso de um aluno (ROLE_PROFESSOR E ADM)
 - [ ] Adicionar/atualizar comentário de um aluno (ROLE_PROFESSOR)
-- [ ] Mudança de status do aluno de "cursando" para "finalizado)
+- [ ] Mudança de status do aluno de "cursando" para "finalizado) (ROLE_PROFESSOR E ADM)
