@@ -8,6 +8,7 @@ import com.stefane.article_manager.service.ArtigoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ public class ArtigoController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> criar(@Valid @RequestBody ArtigoRequestDTO dto) {
         try {
             ArtigoResponseDTO response = service.criar(dto);
@@ -34,6 +36,7 @@ public class ArtigoController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<List<ArtigoResponseDTO>> listar(
             @RequestParam(required = false) Integer ano,
             @RequestParam(required = false) String area,
@@ -72,6 +75,7 @@ public class ArtigoController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.buscarPorId(id));
@@ -81,6 +85,7 @@ public class ArtigoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
                                        @Valid @RequestBody ArtigoRequestDTO dto) {
         try {
@@ -91,6 +96,7 @@ public class ArtigoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         try {
             service.deletar(id);

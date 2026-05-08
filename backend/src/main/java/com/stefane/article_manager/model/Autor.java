@@ -27,6 +27,10 @@ public class Autor {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario criadoPor;
+
     public Long getId() {
         return id;
     }
@@ -62,4 +66,20 @@ public class Autor {
     public void setQtdArtigosRegistrados(Integer qtdArtigosRegistrados) {
         this.qtdArtigosRegistrados = qtdArtigosRegistrados;
     }
+
+    public List<Artigo> getArtigos() {
+        return artigos;
+    }
+
+    public void setArtigos(List<Artigo> artigos) {
+        this.artigos = artigos;
+    }
+
+        public Usuario getCriadoPor() {
+            return criadoPor;
+        }
+
+        public void setCriadoPor(Usuario criadoPor) {
+            this.criadoPor = criadoPor;
+        }
 }

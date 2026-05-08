@@ -5,8 +5,10 @@ import java.util.List;
 import com.stefane.article_manager.dto.ArtigoRequestDTO;
 import com.stefane.article_manager.dto.ArtigoResponseDTO;
 
+
 public interface ArtigoService {
- ArtigoResponseDTO criar(ArtigoRequestDTO dto);
+
+    ArtigoResponseDTO criar(ArtigoRequestDTO dto);
 
     List<ArtigoResponseDTO> listar();
 

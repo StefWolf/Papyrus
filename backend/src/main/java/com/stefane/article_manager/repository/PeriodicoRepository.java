@@ -16,4 +16,6 @@ public interface PeriodicoRepository extends JpaRepository<Periodico, Long> {
     List<Periodico> findAllByOrderByNomeAsc();
 
     boolean existsByLink(String link);
+
+    Long countByCriadoPorId(Long usuarioId);
 }

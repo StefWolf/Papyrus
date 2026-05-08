@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 @Qualifier("avancado")
 public class ArtigoServiceAdvanced extends ArtigoServiceComplete {
 
+
     @Override
     public ArtigoResponseDTO criar(ArtigoRequestDTO dto) {
 

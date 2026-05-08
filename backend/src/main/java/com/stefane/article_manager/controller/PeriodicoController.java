@@ -7,6 +7,7 @@ import com.stefane.article_manager.exception.RegraNegocioException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class PeriodicoController {
     private ArtigoRepository artigoRepository;
 
     @PostMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> criar(@Valid @RequestBody PeriodicoRequestDTO dto) {
 
         if (periodicoRepository.existsByNomeIgnoreCase(dto.getNome())) {
@@ -41,6 +43,7 @@ public class PeriodicoController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<List<PeriodicoResponseDTO>> listar() {
 
         List<PeriodicoResponseDTO> lista = periodicoRepository.findAll()
@@ -58,6 +61,7 @@ public class PeriodicoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
                                        @Valid @RequestBody PeriodicoRequestDTO dto) {
 
@@ -73,6 +77,7 @@ public class PeriodicoController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
 
         periodicoRepository.findById(id)

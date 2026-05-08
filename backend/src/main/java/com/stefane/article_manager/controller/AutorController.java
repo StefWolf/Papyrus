@@ -7,6 +7,7 @@ import com.stefane.article_manager.exception.RegraNegocioException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class AutorController {
     private ArtigoRepository artigoRepository;
 
     @PostMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> criar(@Valid @RequestBody AutorRequestDTO dto) {
 
         if (autorRepository.existsByEmail(dto.getEmail())) {
@@ -42,6 +44,7 @@ public class AutorController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<List<AutorResponseDTO>> listar() {
 
         List<AutorResponseDTO> lista = autorRepository.findAll()
@@ -60,6 +63,7 @@ public class AutorController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
                                        @Valid @RequestBody AutorRequestDTO dto) {
 
@@ -76,6 +80,7 @@ public class AutorController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
 
         autorRepository.findById(id)

@@ -32,6 +32,10 @@ public class Periodico {
         return nome;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario criadoPor;
+
     public String getLink() {
         return link;
     }
@@ -59,5 +63,13 @@ public class Periodico {
 
     public void setArtigos(List<Artigo> artigos) {
         this.artigos = artigos;
+    }
+
+    public Usuario getCriadoPor() {
+        return criadoPor;
+    }
+
+    public void setCriadoPor(Usuario criadoPor) {
+        this.criadoPor = criadoPor;
     }
 }

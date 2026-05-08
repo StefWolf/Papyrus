@@ -7,6 +7,7 @@ import com.stefane.article_manager.exception.RegraNegocioException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -25,6 +26,7 @@ public class AreaController {
     private ArtigoRepository artigoRepository;
 
     @PostMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> criar(@Valid @RequestBody AreaRequestDTO dto) {
 
         if (areaRepository.existsByNomeIgnoreCase(dto.getNome())) {
@@ -40,6 +42,7 @@ public class AreaController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<List<AreaResponseDTO>> listar() {
 
         List<AreaResponseDTO> lista = areaRepository.findAll()
@@ -56,6 +59,7 @@ public class AreaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> atualizar(@PathVariable Long id,
                                        @Valid @RequestBody AreaRequestDTO dto) {
 
@@ -70,6 +74,7 @@ public class AreaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ALUNO')")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
 
         areaRepository.findById(id)

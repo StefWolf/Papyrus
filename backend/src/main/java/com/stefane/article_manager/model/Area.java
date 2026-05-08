@@ -27,6 +27,10 @@ public class Area {
         return nome;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario criadoPor;
+
     public List<Artigo> getArtigos() {
         return artigos;
     }
@@ -45,5 +49,13 @@ public class Area {
 
     public void setArtigos(List<Artigo> artigos) {
         this.artigos = artigos;
+    }
+
+    public Usuario getCriadoPor() {
+        return criadoPor;
+    }
+
+    public void setCriadoPor(Usuario criadoPor) {
+        this.criadoPor = criadoPor;
     }
 }

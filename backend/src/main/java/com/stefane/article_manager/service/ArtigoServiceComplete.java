@@ -18,8 +18,12 @@ import java.util.stream.Collectors;
 @Qualifier("complete")
 public class ArtigoServiceComplete implements ArtigoService {
 
+
     @Autowired
     private ArtigoRepository artigoRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private AutorRepository autorRepository;
@@ -32,6 +36,7 @@ public class ArtigoServiceComplete implements ArtigoService {
 
     @Autowired
     private AuditLogRepository auditLogRepository;
+    
 
     @Override
     public ArtigoResponseDTO criar(ArtigoRequestDTO dto) {
@@ -44,6 +49,7 @@ public class ArtigoServiceComplete implements ArtigoService {
             artigoSalvo.getId(),
             "CREATE"
          );
+
 
          auditLogRepository.save(log);
 
@@ -68,13 +74,14 @@ public class ArtigoServiceComplete implements ArtigoService {
         return converterParaDTO(artigo);
     }
 
-    @Override
+     @Override
     public ArtigoResponseDTO atualizar(Long id, ArtigoRequestDTO dto) {
-        artigoRepository.findById(id)
+        Artigo artigoExistente = artigoRepository.findById(id)
                 .orElseThrow(() -> new RegraNegocioException("Artigo não encontrado"));
 
         Artigo atualizado = montarArtigo(dto);
         atualizado.setId(id);
+        atualizado.setCriadoPor(artigoExistente.getCriadoPor());
 
         Artigo artigoSalvo = artigoRepository.save(atualizado);
 
@@ -119,6 +126,9 @@ public class ArtigoServiceComplete implements ArtigoService {
         artigo.setDoi(dto.getDoi());
         artigo.setObservacoes(dto.getObservacoes());
         artigo.setStatus(dto.getStatus());
+
+        Usuario usuarioLogado = usuarioService.getUsuarioLogado();
+        artigo.setCriadoPor(usuarioLogado);
 
         return artigo;
     }

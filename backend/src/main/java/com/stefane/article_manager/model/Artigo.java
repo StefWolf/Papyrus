@@ -51,6 +51,10 @@ public class Artigo {
         return periodico;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario criadoPor;
+
     public Area getArea() {
         return area;
     }
@@ -105,5 +109,13 @@ public class Artigo {
 
     public void setStatus(StatusArtigo status) {
         this.status = status;
+    }
+
+    public Usuario getCriadoPor() {
+        return criadoPor;
+    }
+
+    public void setCriadoPor(Usuario criadoPor) {
+        this.criadoPor = criadoPor;
     }
 }

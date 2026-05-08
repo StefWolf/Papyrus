@@ -12,5 +12,6 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
 
     List<Area> findByNomeContainingIgnoreCase(String nome);
     boolean existsByNomeIgnoreCase(String nome);
+    Long countByCriadoPorId(Long usuarioId);
 
 }

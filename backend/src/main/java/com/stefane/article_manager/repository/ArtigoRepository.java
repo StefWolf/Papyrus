@@ -22,6 +22,8 @@ public interface ArtigoRepository extends JpaRepository<Artigo, Long> {
 
     boolean existsByDoi(String doi);
 
+    Long countByCriadoPorId(Long usuarioId);
+
     boolean existsByPeriodico_Id(Long periodicoId);
 
     @Query("SELECT a FROM Artigo a WHERE LOWER(a.nome) LIKE LOWER(CONCAT('%', :nome, '%'))")
