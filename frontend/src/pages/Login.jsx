@@ -1,43 +1,80 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getUserRole } from "../utils/auth";
 
-export default function Login() {
+export default function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
+
   const navigate = useNavigate();
-  async function handleLogin(e) {
-    e.preventDefault();
-    setErro("");
-    setCarregando(true);
 
-    try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        email,
-        senha,
-      });
+  function getRoleFromToken(token) {
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
 
-      const token = response.data.token;
+    const roles = payload.roles;
 
-      localStorage.setItem("token", token);
-      navigate("/artigos");
+    if (!roles) return null;
 
-    } catch (error) {
-      setErro("Email ou senha inválidos.");
-    } finally {
-      setCarregando(false);
-    }
+    const rolesText = JSON.stringify(roles);
+
+    if (rolesText.includes("ROLE_ADM")) return "ROLE_ADM";
+    if (rolesText.includes("ROLE_PROFESSOR")) return "ROLE_PROFESSOR";
+    if (rolesText.includes("ROLE_ALUNO")) return "ROLE_ALUNO";
+
+    return null;
+  } catch (error) {
+    return null;
   }
+}
+
+  async function handleLogin(e) {
+  e.preventDefault();
+  setErro("");
+  setCarregando(true);
+
+  try {
+    const response = await axios.post("http://localhost:8080/auth/login", {
+      email,
+      senha,
+    });
+
+    const token = response.data.token;
+
+    localStorage.setItem("token", token);
+
+    const role = getRoleFromToken(token);
+
+    console.log("TOKEN:", token);
+    console.log("ROLE:", role);
+
+    onLoginSuccess(token);
+
+    if (role === "ROLE_ALUNO") {
+      navigate("/artigos", { replace: true });
+    } else if (role === "ROLE_PROFESSOR") {
+      navigate("/painel-professor", { replace: true });
+    } else if (role === "ROLE_ADM") {
+      navigate("/painel-admin", { replace: true });
+    } else {
+      setErro("Não foi possível identificar a permissão do usuário.");
+    }
+
+  } catch (error) {
+    setErro("Email ou senha inválidos.");
+  } finally {
+    setCarregando(false);
+  }
+}
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-slate-800">
-            Papyus
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-800">Papyus</h1>
           <p className="text-slate-500 mt-2">
             Sua melhor opção para organizar suas pesquisas! Acesse sua conta para continuar
           </p>
