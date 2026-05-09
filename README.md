@@ -10,6 +10,9 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 ## Requisitos Funcionais 
   Total: 48 RQs (eu acho) | Professor - 6 | Estudante - 18 | SProgresso - 4| Administrador - 10 | Regras de Negócio - 10.
 
+<img width="1186" height="640" alt="Captura de tela 2026-05-09 084953" src="https://github.com/user-attachments/assets/36172a65-850d-4ae9-9e44-b55bfd9a4983" />
+
+
 ### Professor
 1. Realizar login no sistema.
 2. Cadastrar novos alunos no sistema. 
