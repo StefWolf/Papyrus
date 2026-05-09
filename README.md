@@ -7,6 +7,25 @@ Trata-se de um sistema de gestão e organização de artigos científicos para o
 
 Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquanto o sistema ajuda a organizar os artigos de pesquisa, o professor tem total acompanhamento sobre aquelas atividades dos estudantes podendo agregar com sugestões e melhorias para a pesquisa.
 
+## ATENÇÃO!
+Por contratempos com minha dupla por questões pessoais e de saúde, o desenvolvimento do trabalho foi todo realizado somente por mim, Stefane Orichuela, que infelizmente não conseguiu implementar a tempo todos os requisitos do back para o front-end.
+
+**O que está funcional do FrontEnd?** 
+1. Login dos usuários (Aluno, professor e administrador - JWT)
+2. Cadastro de nova área
+3. Cadastro de novo periódico
+4. Cadastro de novo autor
+5. Cadastro de novo aluno
+6. Atualização de dados do aluno
+7. Cadastro de novo Professor
+8. Remoção de professor
+9. Listagem de alunos no sistema
+10. Listagem de professor no sistema
+11. Cadastro de comentário para o aluno (ocorre dentro do progresso do aluno)
+
+**O que está funcional do BackEnd** 
+Praticamente todos os endpoints e o sistema de autenticação, segue o documento em json do collection que se encontra no repositorio: papyrus_article_manager_postman_collection. 
+
 ## Requisitos Funcionais 
   Total: 48 RQs (eu acho) | Professor - 6 | Estudante - 18 | SProgresso - 4| Administrador - 10 | Regras de Negócio - 10.
 
