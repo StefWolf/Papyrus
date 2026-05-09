@@ -67,7 +67,22 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 8. O sistema deve impedir artigo com ano no futuro.
 9. O sistema deve exigir observação para artigos com status finalizado.
 10. O sistema deve exigir DOI para artigos com status finalizado.
-  
+
+## Entidades do Sistema
+
+| Entidade | Descrição |
+|---|---|
+| `Usuario` | Entidade base responsável por representar os usuários autenticados do sistema. Armazena informações comuns como nome, email, senha e role/permissão. |
+| `UsuarioRole` | Representa os níveis de permissão do sistema (`ROLE_ALUNO`, `ROLE_PROFESSOR`, `ROLE_ADM`) utilizados pelo Spring Security para controle de acesso. |
+| `Aluno` | Representa um usuário do tipo aluno. Armazena informações acadêmicas como matrícula, semestre, curso e status do aluno. |
+| `Professor` | Representa um usuário do tipo professor. Possui informações como formação acadêmica e permissões de gerenciamento de alunos. |
+| `AlunoProgresso` | Responsável pelo acompanhamento do desempenho do aluno no sistema, incluindo comentários do professor, status e métricas de progresso acadêmico. |
+| `Artigo` | Representa um artigo científico cadastrado pelo aluno, contendo informações como nome, ano, DOI, observações, status, autores, área e periódico. |
+| `Autor` | Representa os autores vinculados aos artigos científicos cadastrados no sistema. |
+| `Area` | Representa as áreas de pesquisa ou conhecimento utilizadas para categorizar artigos científicos. |
+| `Periodico` | Representa periódicos científicos associados aos artigos cadastrados, contendo nome e link de acesso. |
+| `AuditLog` | Entidade responsável por armazenar registros de auditoria das operações realizadas no sistema, como criação, atualização e exclusão de dados. |
+
 
 ## Matriz de Permissões do Sistema
 
@@ -153,6 +168,32 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 | `/artigos/{id}` | PUT | Atualizar artigo | ✅ | ❌ | ❌ |
 | `/artigos/{id}` | DELETE | Deletar artigo | ✅ | ❌ | ❌ |
 
+## Tabela de Cirtérios Atendidos para a atividade
+
+| Critério da Atividade | Atende? | Onde encontrar no código |
+|---|---|---|
+| Utilizar Spring Data JPA | ✅ Sim | `ArtigoRepository`, `AlunoRepository`, `ProfessorRepository`, `UsuarioRepository`... |
+| Possuir ao menos 8 entidades mapeadas | ✅ Sim | Pacote `model/` contendo: `Usuario`, `UsuarioRole`, `Aluno`, `Professor`, `AlunoProgresso`, `Artigo`, `Autor`, `Area`, `Periodico`, `AuditLog`. |
+| Relacionamento um-para-muitos / muitos-para-um | ✅ Sim | Em `Artigo.java`: relacionamento com `Area` e `Periodico` usando `@ManyToOne`. |
+| Relacionamento muitos-para-muitos | ✅ Sim | Em `Artigo.java` e `Autor.java`: relacionamento `@ManyToMany` entre artigos e autores. |
+| Relacionamento um-para-um | ✅ Sim | Em `Aluno.java` ↔ `AlunoProgresso.java` usando `@OneToOne`. Também `Usuario` ↔ `Aluno` e `Usuario` ↔ `Professor`. |
+| CRUD para entidade Area | ✅ Sim | `AreaController.java` (`POST`, `GET`, `PUT`, `DELETE`) |
+| CRUD para entidade Autor | ✅ Sim | `AutorController.java` (`POST`, `GET`, `PUT`, `DELETE`) |
+| CRUD para entidade Periodico | ✅ Sim | `PeriodicoController.java` (`POST`, `GET`, `PUT`, `DELETE`) |
+| CRUD para entidade Artigo | ✅ Sim | `ArtigoController.java` (`POST`, `GET`, `PUT`, `DELETE`) |
+| CRUD para entidade Aluno | ✅ Sim | `AlunoController.java` (`POST`, `GET`, `PUT`, `PATCH`) |
+| CRUD para entidade Professor | ✅ Sim | `ProfessorController.java` (`POST`, `GET`, `PUT`, `DELETE`) |
+| Operações com queries personalizadas | ✅ Sim | Repositories como `AreaRepository`, `AutorRepository`, `ArtigoRepository`, `UsuarioRepository`. |
+| Query personalizada de verificação de nome | ✅ Sim | `existsByNomeIgnoreCase()` em `AreaRepository` e `PeriodicoRepository`. |
+| Query personalizada de verificação de email | ✅ Sim | `existsByEmail()` em `AutorRepository` e `UsuarioRepository`. |
+| Query personalizada por relacionamento | ✅ Sim | `existsByArea_Id()`, `existsByAutores_Id()`, `existsByPeriodico_Id()` em `ArtigoRepository`. |
+| Query personalizada de autenticação | ✅ Sim | `findByEmail()` em `UsuarioRepository`. |
+| Segurança com Spring Security | ✅ Sim | `SecurityConfig.java`, `JwtAuthenticationFilter.java`, `JwtService.java`. |
+| Controle de permissões por roles | ✅ Sim | Anotações `@PreAuthorize` nos controllers. |
+| Autenticação JWT | ✅ Sim | `AuthController.java`, `JwtService.java`, `JwtAuthenticationFilter.java`. |
+| DTOs para desacoplamento | ✅ Sim | Pacote `dto/` com `AlunoDTO`, `ProfessorDTO`, `ArtigoRequestDTO`, `ArtigoResponseDTO`, etc. |
+| Validações com Bean Validation | ✅ Sim | Uso de `@Valid`, `@NotBlank`, `@Size`, `@Email` nos DTOs. |
+| Uso correto de Status HTTP | ✅ Sim | `ResponseEntity.status(HttpStatus.CREATED)`, `ResponseEntity.noContent()`, `404`, `403`, etc. |
 
 ## Front
 
