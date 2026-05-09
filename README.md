@@ -68,8 +68,6 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 6. O sistema deve impedir a exclusão de periódico vinculado a artigo.
 7. O sistema deve exigir pelo menos um autor para cadastrar um artigo.
 8. O sistema deve impedir artigo com ano no futuro.
-9. O sistema deve exigir observação para artigos com status finalizado.
-10. O sistema deve exigir DOI para artigos com status finalizado.
 
 ## Entidades do Sistema
 
