@@ -84,6 +84,9 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 | `Periodico` | Representa periódicos científicos associados aos artigos cadastrados, contendo nome e link de acesso. |
 | `AuditLog` | Entidade responsável por armazenar registros de auditoria das operações realizadas no sistema, como criação, atualização e exclusão de dados. |
 
+<img width="1001" height="1101" alt="DiagramaSocorro drawio" src="https://github.com/user-attachments/assets/8cf0a27b-7f8b-4cc4-b518-bf52aebd2d9b" />
+
+
 
 ## Matriz de Permissões do Sistema
 
