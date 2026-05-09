@@ -1,0 +1,1772 @@
+{
+  "info": {
+    "_postman_id": "a6a34a45-0d18-4884-97f2-c274e7ba2899",
+    "name": "Papyus - Gerenciador de Artigos - Fluxos Completos",
+    "description": "Collection para testar os requisitos funcionais: autenticação JWT, roles ALUNO/PROFESSOR/ADM, CRUDs e progresso do aluno.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "professorToken",
+      "value": ""
+    },
+    {
+      "key": "alunoToken",
+      "value": ""
+    },
+    {
+      "key": "professorId",
+      "value": "1"
+    },
+    {
+      "key": "alunoId",
+      "value": "1"
+    },
+    {
+      "key": "areaId",
+      "value": "1"
+    },
+    {
+      "key": "autorId",
+      "value": "1"
+    },
+    {
+      "key": "periodicoId",
+      "value": "1"
+    },
+    {
+      "key": "artigoId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "00 - Auth JWT",
+      "item": [
+        {
+          "name": "Login ADM inicial",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"adm@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login ADM OK', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('adminToken', json.token);",
+                  "pm.collectionVariables.set('token', json.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Professor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"professor.teste@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login Professor OK', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('professorToken', json.token);",
+                  "pm.collectionVariables.set('token', json.token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login Aluno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"aluno.teste@email.com\",\n  \"senha\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Login Aluno OK', () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.collectionVariables.set('alunoToken', json.token);",
+                  "pm.collectionVariables.set('token', json.token);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "01 - ADM gerencia professores",
+      "item": [
+        {
+          "name": "Cadastrar professor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/professores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "professores"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Professor Teste\",\n  \"email\": \"professor.teste@email.com\",\n  \"senha\": \"123456\",\n  \"formacao\": \"Doutorado em Computação\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('professorId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('professorId', json[0].id);",
+                  "if (!pm.collectionVariables.get('professorId')) console.warn('Não foi possível salvar professorId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar professores",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/professores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "professores"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('professorId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('professorId', json[0].id);",
+                  "if (!pm.collectionVariables.get('professorId')) console.warn('Não foi possível salvar professorId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar professor por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/professores/{{professorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "professores",
+                "{{professorId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar professor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/professores/{{professorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "professores",
+                "{{professorId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Professor Teste Atualizado\",\n  \"email\": \"professor.teste@email.com\",\n  \"senha\": \"123456\",\n  \"formacao\": \"Doutorado em Engenharia de Software\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar professor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/professores/{{professorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "professores",
+                "{{professorId}}"
+              ]
+            },
+            "description": "Use no final dos testes, pois remove o professor usado nos fluxos."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "02 - PROFESSOR/ADM gerencia alunos",
+      "item": [
+        {
+          "name": "Cadastrar aluno como ADM",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Aluno Teste\",\n  \"email\": \"aluno.teste@email.com\",\n  \"senha\": \"123456\",\n  \"numeroMatricula\": \"20260001\",\n  \"semestre\": 3,\n  \"curso\": \"BTI\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('alunoId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('alunoId', json[0].id);",
+                  "if (!pm.collectionVariables.get('alunoId')) console.warn('Não foi possível salvar alunoId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar aluno como Professor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Aluno criado pelo Professor\",\n  \"email\": \"aluno.professor@email.com\",\n  \"senha\": \"123456\",\n  \"numeroMatricula\": \"20260002\",\n  \"semestre\": 2,\n  \"curso\": \"Engenharia de Software\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('professorToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('alunoId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('alunoId', json[0].id);",
+                  "if (!pm.collectionVariables.get('alunoId')) console.warn('Não foi possível salvar alunoId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar alunos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('alunoId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('alunoId', json[0].id);",
+                  "if (!pm.collectionVariables.get('alunoId')) console.warn('Não foi possível salvar alunoId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar aluno por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar aluno",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Aluno Teste Atualizado\",\n  \"email\": \"aluno.teste@email.com\",\n  \"senha\": \"123456\",\n  \"numeroMatricula\": \"20260001\",\n  \"semestre\": 4,\n  \"curso\": \"BTI\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Finalizar aluno",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/{{alunoId}}/finalizar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "{{alunoId}}",
+                "finalizar"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "03 - ALUNO CRUD Área",
+      "item": [
+        {
+          "name": "Criar área",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "areas"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Realidade Virtual\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar áreas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "areas"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('areaId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('areaId', json[0].id);",
+                  "if (!pm.collectionVariables.get('areaId')) console.warn('Não foi possível salvar areaId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar área",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas/{{areaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "areas",
+                "{{areaId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Realidade Virtual e Aumentada\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar área",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas/{{areaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "areas",
+                "{{areaId}}"
+              ]
+            },
+            "description": "Pode falhar se tiver artigo vinculado."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "04 - ALUNO CRUD Autor",
+      "item": [
+        {
+          "name": "Criar autor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Alyson Souza\",\n  \"email\": \"alyson.souza@email.com\",\n  \"lattes\": \"http://lattes.cnpq.br/0000000000000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar autores",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('autorId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('autorId', json[0].id);",
+                  "if (!pm.collectionVariables.get('autorId')) console.warn('Não foi possível salvar autorId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar autor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Alyson Souza Atualizado\",\n  \"email\": \"alyson.souza@email.com\",\n  \"lattes\": \"http://lattes.cnpq.br/1111111111111111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar autor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/autores/{{autorId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "autores",
+                "{{autorId}}"
+              ]
+            },
+            "description": "Pode falhar se tiver artigo vinculado."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "05 - ALUNO CRUD Periódico",
+      "item": [
+        {
+          "name": "Criar periódico",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periodicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periodicos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"IEEE VR\",\n  \"link\": \"https://ieeevr.org/\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar periódicos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periodicos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periodicos"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('periodicoId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('periodicoId', json[0].id);",
+                  "if (!pm.collectionVariables.get('periodicoId')) console.warn('Não foi possível salvar periodicoId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar periódico",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periodicos/{{periodicoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periodicos",
+                "{{periodicoId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"IEEE VR Atualizado\",\n  \"link\": \"https://ieeevr.org/\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar periódico",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/periodicos/{{periodicoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "periodicos",
+                "{{periodicoId}}"
+              ]
+            },
+            "description": "Pode falhar se tiver artigo vinculado."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "06 - ALUNO CRUD Artigo",
+      "item": [
+        {
+          "name": "Criar artigo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Estudo sobre Realidade Virtual na Educação\",\n  \"ano\": 2026,\n  \"areaId\": \"{{areaId}}\",\n  \"periodicoId\": \"{{periodicoId}}\",\n  \"autoresIds\": [\n    \"{{autorId}}\"\n  ],\n  \"doi\": \"10.0000/papyus.2026.001\",\n  \"observacoes\": \"Artigo finalizado com DOI para validação das regras.\",\n  \"status\": \"FINALIZADO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar artigos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status esperado', () => pm.expect(pm.response.code).to.be.oneOf([200,201]));",
+                  "const json = pm.response.json();",
+                  "if (json.id) pm.collectionVariables.set('artigoId', json.id);",
+                  "if (Array.isArray(json) && json.length > 0 && json[0].id) pm.collectionVariables.set('artigoId', json[0].id);",
+                  "if (!pm.collectionVariables.get('artigoId')) console.warn('Não foi possível salvar artigoId. Talvez o DTO não retorne id; preencha a variável manualmente.');"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar artigos com filtros",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos?ano=2026&area=Realidade%20Virtual&autor=Alyson%20Souza&status=FINALIZADO",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar artigo por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar artigo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Estudo atualizado sobre Realidade Virtual na Educação\",\n  \"ano\": 2026,\n  \"areaId\": \"{{areaId}}\",\n  \"periodicoId\": \"{{periodicoId}}\",\n  \"autoresIds\": [\n    \"{{autorId}}\"\n  ],\n  \"doi\": \"10.0000/papyus.2026.002\",\n  \"observacoes\": \"Atualização do artigo finalizado.\",\n  \"status\": \"FINALIZADO\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deletar artigo",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/artigos/{{artigoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "artigos",
+                "{{artigoId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "07 - Progresso do aluno",
+      "item": [
+        {
+          "name": "Visualizar progresso como Professor",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/progresso/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "progresso",
+                "{{alunoId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('professorToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar comentário como Professor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/progresso/{{alunoId}}/comentario",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "progresso",
+                "{{alunoId}}",
+                "comentario"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comentario\": \"Aluno apresentou bom progresso no cadastro e organização de artigos científicos.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('professorToken'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Visualizar progresso como ADM",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/progresso/{{alunoId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "progresso",
+                "{{alunoId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "08 - Testes negativos de permissão",
+      "item": [
+        {
+          "name": "ALUNO tentando listar alunos - 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('alunoToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Deve retornar 403 Forbidden', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ADM tentando criar área - 403 se endpoint for só ALUNO",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/areas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "areas"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Área proibida ADM\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Deve retornar 403 Forbidden', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ADM tentando comentar progresso - 403 se endpoint for só PROFESSOR",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/alunos/progresso/{{alunoId}}/comentario",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "alunos",
+                "progresso",
+                "{{alunoId}}",
+                "comentario"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"comentario\": \"Comentário ADM\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('token', pm.collectionVariables.get('adminToken'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Deve retornar 403 Forbidden', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
