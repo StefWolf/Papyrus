@@ -195,6 +195,10 @@ Seu principal objetivo é atender aos alunos pesquisadores e professores. Enquan
 | Validações com Bean Validation | ✅ Sim | Uso de `@Valid`, `@NotBlank`, `@Size`, `@Email` nos DTOs. |
 | Uso correto de Status HTTP | ✅ Sim | `ResponseEntity.status(HttpStatus.CREATED)`, `ResponseEntity.noContent()`, `404`, `403`, etc. |
 
+## Explicação do Sistema de Login (passo a passo) 
+
+A segurança nesse sistema papyrus foi implementada utilizando Spring Security com autenticação baseada em JWT. O usuário realiza login com email e senha, o sistema valida as credenciais através do AuthenticationManager e do CustomUserDetailsService, e então gera um token JWT contendo os dados e permissões do usuário. O frontend envia esse token em todas as requisições protegidas, permitindo que o backend valide o usuário autenticado. O controle de autorização é feito utilizando @PreAuthorize, restringindo o acesso aos endpoints conforme as roles ROLE_ALUNO, ROLE_PROFESSOR e ROLE_ADM.
+
 ## Front
 
 <img width="1361" height="894" alt="Captura de tela 2026-05-05 213418" src="https://github.com/user-attachments/assets/4211a508-4e31-4c5a-b9d6-552336135307" />
